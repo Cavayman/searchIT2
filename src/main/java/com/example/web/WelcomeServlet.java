@@ -11,8 +11,9 @@ import java.io.PrintWriter;
 /**
  * Created by cavayman on 29.09.2016.
  */
-@WebServlet(value = "/")
+@WebServlet(urlPatterns = "/main")
 public class WelcomeServlet extends HttpServlet {
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
