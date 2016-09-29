@@ -15,8 +15,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous">
-
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
+
 <body>
 <section class="top-main">
     <div class="wrapper col-xs-5 col-xs-offset-5">
@@ -27,11 +28,10 @@
         </div>
         <div class="button col-xs-12">
             <div>
-                <form action="/main">
-                    <label class="btn btn-warning btn-file col-xs-5">
-                        Browse <input type="file" accept=".txt" style="display: none;">
-                    </label>
-                </form>
+                    <input id="file" type="file" name="file" size="50" accept=".txt"/>
+                    <br />
+                    <input class="btn btn-warning" id="upload" value="Upload File" readonly />
+
             </div>
         </div>
     </div>
@@ -39,8 +39,6 @@
 
 
 <script src="https://use.fontawesome.com/d651e9a7a1.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
+<script src="/resources/main.js"></script>
 </body>
 </html>
