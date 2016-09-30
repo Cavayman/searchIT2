@@ -28,15 +28,17 @@
         </div>
         <div class="button col-xs-12">
             <div>
-                    <input id="file" type="file" name="file" size="50" accept=".txt"/>
-                    <br />
-                    <input class="btn btn-warning" id="upload" value="Upload File" readonly />
+                <input id="file" type="file" name="file" size="50" accept=".txt"/>
+                <br/>
+                <input class="btn btn-warning" id="upload" value="Upload File" readonly/>
 
             </div>
         </div>
     </div>
 </section>
+<section id="content" class="container">
 
+</section>
 
 <script src="https://use.fontawesome.com/d651e9a7a1.js"></script>
 <script src="/resources/main.js"></script>

@@ -23,13 +23,10 @@ import java.nio.file.Paths;
 public class UploadServlet extends HttpServlet {
 
     private static final String UPLOAD_DIR = "uploads";
+    private  FileService fileService=new FileService();
 
     /**
      * Getting file throu request and saving it in uploads directory
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
      */
     @Override
     protected void doPost(HttpServletRequest request,
@@ -52,14 +49,21 @@ public class UploadServlet extends HttpServlet {
         //Get all the parts from request and write it to the file on server
         for (Part part : request.getParts()) {
            fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-            FileService.file=new File(uploadFilePath + File.separator + fileName);
+            fileService.file=new File(uploadFilePath + File.separator + fileName);
             part.write(uploadFilePath + File.separator + fileName);
         }
 
         request.setAttribute("message", fileName + " File uploaded successfully!");
 
         JSONObject obj=new JSONObject();
+        obj.put("Name", fileName);
+        obj.put("Text", fileService.getTextFile(FileService.file));
 
-
+        response.setContentType("application/json");
+// Get the printwriter object from response to write the required json object to the output stream
+        PrintWriter out = response.getWriter();
+// Assuming your json object is **jsonObject**, perform the following, it will return your json object
+        out.print(obj);
+        out.flush();
     }
 }
