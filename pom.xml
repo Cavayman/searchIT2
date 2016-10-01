@@ -7,6 +7,7 @@
     <artifactId>searchIt</artifactId>
     <properties>
         <servlets-ver>3.1.0</servlets-ver>
+        <postgresql.version>9.4.1208</postgresql.version>
     </properties>
 
     <dependencies>
@@ -22,14 +23,13 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
+
+        <!--json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160810</version>
         </dependency>
-
-
         <!--JSON Helper-->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -43,11 +43,26 @@
             <version>4.9</version>
         </dependency>
 
+        <!--hibernate-core -->
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.2.Final</version>
         </dependency>
+        <!-- hibernate-annotations -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
+        </dependency>
+        <!--Postgres Connector-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
