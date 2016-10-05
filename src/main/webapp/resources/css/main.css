@@ -1,11 +1,52 @@
 .top-main {
     width: 100%;
-    padding:15% 1% 0 1%;
+    padding:5% 1% 0 1%;
     background-color: #ADFF99;
-    height:100%;
+  height: 100%;
 }
 .logo{
     margin:0 5px 10px 5px;
 }
+.file-list{
+    padding-top: 40px;
+}
+.plate{
+    padding:10px;
+    text-align: center;
+    height: 100px;
+    transition: 0.3s;
+}
+.plate:hover{
+  background-color: #94db82;
+}
+.menu{
+    width: 100%;
+    height: 60px;
+    background-color: #757F73;
+    padding-left: 60px;
+    padding-top: 10px;
+    color:white;
+}
+.menu>.form-control {
+    float:left;
+}
+#content{
+    padding-right: 20%;
+}
+
+.fa-plus-circle{
+    position: absolute;
+    bottom: -29px;
+    z-index: 1;
+    left: +10px;
+}
+
+.fa-plus-circle:hover{
+    color:#7cc16a;
+}
+
+
+
+
 
 
