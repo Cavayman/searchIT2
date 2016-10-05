@@ -14,17 +14,16 @@ public class Metadata {
     private String fileName;
     private String fileSize;
     private Date fileCreationDate;
-    @OneToOne(cascade = CascadeType.ALL)
-    private FileModel file;
+    private Date fileLastModifiedDate;
 
     public Metadata() {
     }
 
-    public int getMetadata_id() {
+    public Integer getMetadata_id() {
         return metadata_id;
     }
 
-    public void setMetadata_id(int metadata_id) {
+    public void setMetadata_id(Integer metadata_id) {
         this.metadata_id = metadata_id;
     }
 
@@ -52,11 +51,11 @@ public class Metadata {
         this.fileCreationDate = fileCreationDate;
     }
 
-    public FileModel getFile() {
-        return file;
+    public Date getFileLastModifiedDate() {
+        return fileLastModifiedDate;
     }
 
-    public void setFile(FileModel file) {
-        this.file = file;
+    public void setFileLastModifiedDate(Date fileLastModifiedDate) {
+        this.fileLastModifiedDate = fileLastModifiedDate;
     }
 }
