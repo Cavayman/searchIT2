@@ -9,17 +9,17 @@ import javax.persistence.Persistence;
  */
 public class EntityManagerHelper {
 
-    private static final EntityManager entityManager;
+    private static final EntityManagerFactory entityManager;
 
     static {
         try {
-            entityManager = Persistence.createEntityManagerFactory("CRM").createEntityManager();
+            entityManager = Persistence.createEntityManagerFactory("CRM");
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
     }
 
-    public static EntityManager getEntityManager() {
+    public static EntityManagerFactory getEntityManagerFactory() {
         return entityManager;
     }
 

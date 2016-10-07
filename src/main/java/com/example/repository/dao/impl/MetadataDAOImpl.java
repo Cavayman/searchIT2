@@ -16,10 +16,19 @@ public class MetadataDAOImpl extends BaseDAOImpl<Metadata,Integer> implements Me
 
     public Metadata findByName(String name) {
         try {
+            em.getTransaction().begin();
             Query query = em.createQuery("SELECT m FROM Metadata m WHERE m.fileName LIKE :name");
             query.setParameter("name", "%" + name + "%");
-            return (Metadata) query.getSingleResult();
+            Metadata metadata=(Metadata) query.getSingleResult();
+            System.out.println("FROM DAO"+name);
+
+            System.out.println("FROM DAO"+metadata);
+            em.getTransaction().commit();
+
+            return metadata;
         } catch (NoResultException e) {
+          if(em.getTransaction()!=null)
+              em.getTransaction().rollback();
             return null;
         }
     }

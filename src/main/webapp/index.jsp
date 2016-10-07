@@ -12,10 +12,10 @@
 <meta charset="utf-8">
 <title>Title</title>
 <link rel="stylesheet" href="resources/css/main.css">
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous">
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
@@ -44,28 +44,37 @@
 <div class="bottom">
     <i id="show" class="fa fa-plus-circle fa-4x" aria-hidden="true"></i>
     <div id="menu" class="menu">
-        <%--<div class="limit row col-xs-3">--%>
-        <%--<label>Limit of rows</label>--%>
-        <%--<input class="form-control " list="dropdown-limit" placeholder="Enter limit...">--%>
-        <%--<datalist id="dropdown-limit">--%>
-        <%--<option value="1">--%>
-        <%--<option value="2">--%>
-        <%--<option value="3">--%>
-        <%--<option value="3">--%>
-        <%--<option value="4">--%>
-        <%--</datalist>--%>
-        <%--</div>--%>
         <div class="search col-xs-2">
-            <input id="searchWord" class="form-control" placeholder="Search..." type="text">
+            <label for="searchWord">Include meta</label>
+            <input id="searchWord" class="form-control" placeholder="Search word..." type="text">
         </div>
-        <input id="search" class="btn btn-primary col-xs-1" placeholder="Search..." type="text" readonly>
+        <div class="search col-xs-1">
+            <label for="limit">Set Limit</label>
+            <input id="limit" class="form-control" placeholder="№" type="text">
+        </div>
+        <div class="search col-xs-1">
+            <label for="length">Set Length</label>
+            <input id="length" class="form-control" placeholder="№" type="text">
+        </div>
+        <div class="search col-xs-2">
+            <label for="includeMetaData">Include meta</label>
+            <input id="includeMetaData" class="form-control" type="checkbox" name="includeMetaData" checked>
+        </div>
+
+        <button id="search" class="btn btn-warning col-xs-5" type="text" >Search</button>
     </div>
     <div id="content" class="container">
-
+        <div id="wholeText" class="col-xs-6">
+            </div>
+        <div id="searchRes" class="col-xs-6">
+        </div>
     </div>
 </div>
-
 <script src="https://use.fontawesome.com/d651e9a7a1.js"></script>
-<script src="resources/main.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="resources/js/jquery.toaster.js"></script>
+<script src="resources/js/main.js"></script>
+
+
 </body>
 </html>

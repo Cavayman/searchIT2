@@ -1,10 +1,13 @@
 package com.example.web;
 
 
-
-import com.example.repository.model.Metadata;
 import com.example.service.FileService;
 
+import com.example.service.MetadataService;
+import com.example.util.FilterConfig;
+import com.example.util.FilterMakerImpl.SimpleTextFilterImpl;
+import com.example.util.FilterMakerInterface;
+import com.example.util.JsonMaker;
 import org.json.simple.JSONObject;
 
 import javax.annotation.Resource;
@@ -17,22 +20,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by cavayman on 29.09.2016.
  */
 @WebServlet(urlPatterns = "/uploadFile")
-@MultipartConfig()
+@MultipartConfig (maxFileSize=1024*1024*10,      // 10MB
+        maxRequestSize=1024*1024*50)
 @Resource
 public class UploadServlet extends HttpServlet {
 
+    public static final String SAVE_DIR = "uploadFiles";
 
     private FileService fileService = new FileService();
-
+    private MetadataService metadataService=new MetadataService();
 
     /**
      * Getting file throu request and saving it in uploads directory
@@ -40,13 +41,39 @@ public class UploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Part filePart = request.getPart("file");
-        fileService.saveTextFile(filePart);
+        String appPath = request.getServletContext().getRealPath("");
+        String savePath = appPath + File.separator + SAVE_DIR;
 
-        JSONObject obj = new JSONObject();
+        File fileSaveDir = new File(savePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+
+        String fileName = extractFileName(filePart);
+        File savedFile=fileService.saveTextFile(filePart,savePath + File.separator + fileName);
+        metadataService.saveMetadata(savedFile);
+
+        JsonMaker jsonMaker=new JsonMaker();
+        FilterConfig filterConfig=new FilterConfig(savePath + File.separator + fileName);
+        FilterMakerInterface filterMakerInterface=new SimpleTextFilterImpl();
+
+        jsonMaker.setFilterMaker(filterMakerInterface);
+        jsonMaker.setFilterConfig(filterConfig);
 
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.print(obj);
+        out.print(jsonMaker.make());
         out.flush();
+    }
+
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length()-1);
+            }
+        }
+        return "";
     }
 }

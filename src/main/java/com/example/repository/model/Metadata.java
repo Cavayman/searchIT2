@@ -58,4 +58,15 @@ public class Metadata {
     public void setFileLastModifiedDate(Date fileLastModifiedDate) {
         this.fileLastModifiedDate = fileLastModifiedDate;
     }
+
+    @Override
+    public String toString() {
+        return "Metadata{" +
+                "metadata_id=" + metadata_id +
+                ", fileName='" + fileName + '\'' +
+                ", fileSize='" + fileSize + '\'' +
+                ", fileCreationDate=" + fileCreationDate +
+                ", fileLastModifiedDate=" + fileLastModifiedDate +
+                '}';
+    }
 }

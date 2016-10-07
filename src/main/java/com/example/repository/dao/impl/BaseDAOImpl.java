@@ -14,7 +14,7 @@ public class BaseDAOImpl<E, N extends Number> implements BaseDAO<E, N> {
 
     private Class<E> entityClass;
 
-    protected EntityManager em = EntityManagerHelper.getEntityManager();
+    protected EntityManager em = EntityManagerHelper.getEntityManagerFactory().createEntityManager();
 
     public BaseDAOImpl(Class<E> entityClass) {
         this.entityClass = entityClass;
@@ -27,6 +27,8 @@ public class BaseDAOImpl<E, N extends Number> implements BaseDAO<E, N> {
             query.setParameter("id", id);
             return (E) query.getSingleResult();
         } catch (NoResultException e) {
+            if(em.getTransaction()!=null)
+                em.getTransaction().rollback();
             return null;
         }
     }
@@ -36,11 +38,13 @@ public class BaseDAOImpl<E, N extends Number> implements BaseDAO<E, N> {
         try {
             em.getTransaction().begin();
             em.persist(entity);
+            em.getTransaction().commit();
         } catch (Exception e) {
+            if(em.getTransaction()!=null)
+                em.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            em.getTransaction().commit();
-        }
+       }
     }
 
     @Override
@@ -49,6 +53,8 @@ public class BaseDAOImpl<E, N extends Number> implements BaseDAO<E, N> {
             em.getTransaction().begin();
             em.remove(em.merge(entity));
         } catch (Exception e) {
+            if(em.getTransaction()!=null)
+                em.getTransaction().rollback();
             e.printStackTrace();
         } finally {
             em.getTransaction().commit();
@@ -61,6 +67,8 @@ public class BaseDAOImpl<E, N extends Number> implements BaseDAO<E, N> {
             em.getTransaction().begin();
          return   em.merge(entity);
         } catch (NoResultException e) {
+            if(em.getTransaction()!=null)
+                em.getTransaction().rollback();
             return null;
         } finally {
             em.getTransaction().commit();
@@ -73,6 +81,8 @@ public class BaseDAOImpl<E, N extends Number> implements BaseDAO<E, N> {
             em.getTransaction().begin();
             return em.createQuery("from " + entityClass.getSimpleName()).getResultList();
         } catch (NoResultException e) {
+            if(em.getTransaction()!=null)
+                em.getTransaction().rollback();
             return null;
         } finally {
             em.getTransaction().commit();
