@@ -1,7 +1,6 @@
 package com.example.util.FilterMakerImpl;
 
-import com.example.repository.dao.MetadataDAO;
-import com.example.repository.dao.impl.MetadataDAOImpl;
+
 import com.example.repository.model.Metadata;
 import com.example.service.MetadataService;
 import com.example.util.FilterConfig;
@@ -13,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +20,8 @@ import java.util.regex.Pattern;
 
 /**
  * Created by cavayman on 06.10.2016.
+ *
+ * This class is implementing FilterMakerInterface and setting all behaviour for reading text,filtering.
  */
 public class SimpleTextFilterImpl implements FilterMakerInterface {
 
@@ -32,45 +32,42 @@ public class SimpleTextFilterImpl implements FilterMakerInterface {
         metadataService=new MetadataService();
     }
 
-    public SimpleTextFilterImpl(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
-    }
-
     @Override
-    public synchronized List<String> filterText() throws IOException {
+    public  List<String> filterText() {
         List<String> contents = new ArrayList<String>();
-        List<String> wordsList = readFile(filterConfig.getFileName());
+        List<String> wordsList = readFile();
         for (String word : wordsList) {
             String acceptable = filterWord(word);
             if (acceptable != null) {
                 contents.add(acceptable);
             }
         }
+        if(contents.isEmpty()){
+            contents.add("Sorry!I cant find anything to show you.");
+        }
         return contents;
     }
 
     @Override
-    public void setFilterConfig(FilterConfig filterConfig) {
+    public  void setFilterConfig(FilterConfig filterConfig) {
     this.filterConfig=filterConfig;
     }
 
     @Override
     public JSONObject getMetadataJson() {
-        Metadata metadata=metadataService.getMetadataByName(Paths.get(filterConfig.getFileName()).getFileName().toString());
-     JSONObject metaJson=new JSONObject();
-        metaJson.put("id",metadata.getMetadata_id());
+        JSONObject metaJson=new JSONObject();
+        Metadata metadata=metadataService.getMetadata(filterConfig.getFileName());
         metaJson.put("fileName",metadata.getFileName());
         metaJson.put("fileSize",metadata.getFileSize());
         metaJson.put("fileCreationDate",metadata.getFileCreationDate().toString());
-        metaJson.put("fileLastModifiedDate",metadata.getFileLastModifiedDate().toString());
         return metaJson;
     }
 
 
-    public  List<String> readFile(String fileName) {
+    private synchronized List<String> readFile() {
         List<String> wordsList=new ArrayList<>();
         try (FileReader fileReader = new FileReader(filterConfig.getFileName());
-             BufferedReader reader = new BufferedReader(fileReader);) {
+             BufferedReader reader = new BufferedReader(fileReader)) {
             if (filterConfig.getLimit() != 10000) {
                 char[] buffer = new char[filterConfig.getLimit()];
                 reader.read(buffer, 0, filterConfig.getLimit());
@@ -92,7 +89,7 @@ public class SimpleTextFilterImpl implements FilterMakerInterface {
     }
 
 
-    public String filterWord(String word) {
+    private String filterWord(String word) {
         if (filterConfig.getQ().equals("")) {
             String acceptable = runLengthFilter(word);
             if (acceptable != null) {
@@ -107,7 +104,7 @@ public class SimpleTextFilterImpl implements FilterMakerInterface {
         return null;
     }
 
-    public String runLengthFilter(String word) {
+    private String runLengthFilter(String word) {
         if (filterConfig.getLength() != null) {
             return (word.length() > filterConfig.getLength()) ? null : word;
         }
@@ -115,7 +112,7 @@ public class SimpleTextFilterImpl implements FilterMakerInterface {
     }
 
 
-    public String runQueryFilter(String word) {
+    private String runQueryFilter(String word) {
         if (filterConfig.getQ() != null && !filterConfig.getQ().equals("")) {
             Pattern pattern = Pattern.compile(filterConfig.getQ());
             Matcher matcher = pattern.matcher(word);

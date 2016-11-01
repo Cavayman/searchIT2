@@ -1,6 +1,5 @@
 $(document).ready(function () {
-    alert("asd");
-    $(".menu").hide();
+   $(".menu").hide();
     $("#show").hide();
     showAllFiles();
 });
@@ -14,29 +13,32 @@ $('#upload').on('click', function () {
     var file = $('#file')[0].files[0];
     formData.append('file', $('#file')[0].files[0]);
     $.ajax({
-        url: '/uploadFile',
+        url: './uploadFile',
         type: 'POST',
         data: formData,
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
         success: function (data) {
+            oveflowY();
             $("#show").show();
             $('#wholeText').empty();
-            var metadata=data.metaData;
+            var metadata = data.metaData;
             var title = $('<h1>').append(metadata.fileName);
-            currentFileName=metadata.fileName;
-            addIcon(metadata.fileName,metadata.id);
+            currentFileName = metadata.fileName;
+            addIcon(metadata.fileName, metadata.id);
             var text = $('<p>');
-           $.each(data.text,function(index, element) {
-               text.append(element+' ');
-           })
+            $.each(data.text, function (index, element) {
+                text.append(element + ' ');
+            })
             $('#wholeText').append(title).append(text);
             $('body').animate({
                 scrollTop: $('body')[0].scrollHeight
             }, 200);
-            $.toaster({ message : "File size:"+metadata.fileSize+"<br>"
-            +"File name:" +metadata.fileName+"<br>"
-            +"Creation date:"+metadata.fileCreationDate,title:"Metadata" });
+            $.toaster({
+                message: "File size:" + metadata.fileSize + "<br>"
+                + "File name:" + metadata.fileName + "<br>"
+                + "Creation date:" + metadata.fileCreationDate, title: "Metadata"
+            });
         }
     });
 })
@@ -52,50 +54,57 @@ function showMenu() {
         show = 0;
     }
 }
-
+function oveflowY(){
+    $('body').css("overflow-y","visible");
+}
 function search() {
     var wordToSearch = $('#searchWord').val();
     var lengthOfFile = $('#length').val();
     var limitOfFile = $('#limit').val();
     var includeMetaData = $('#includeMetaData:checked').val();
-    if(includeMetaData=='on') {
+    if (includeMetaData == 'on') {
         includeMetaData = true;
-    }else {
+    } else {
         includeMetaData = false;
     }
-        $.ajax({
-        url: '/searchWithParams?q='+wordToSearch
-        +'&length='+lengthOfFile
-        +'&limit='+limitOfFile
-        +'&includeMetaData=' +includeMetaData+
-        '&fileName='+currentFileName,
-        type: 'POST',
-        processData: false,  // tell jQuery not to process the data
-        contentType: false,  // tell jQuery not to set contentType
-        success: function (data) {
-            $("#show").show();
-            $('#searchRes').empty();
-            var metadata=data.metaData;
-            var title = $('<h1>').append("Response");
-            var text = $('<p>').append(JSON.stringify(data.metaData)+'<br>');
-            text.append("Text: ");
-            $.each(data.text,function(index, element) {
-                text.append(element+' ');
-            })
-            $('#searchRes').append(title).append(text);
-            if(metadata!=null) {
-                $.toaster({
-                    message: "File size:" + metadata.fileSize + "<br>"
-                    + "File name:" + metadata.fileName + "<br>"
-                    + "Creation date:" + metadata.fileCreationDate, title: "Metadata"
-                });
+    $.ajax({
+            url: './searchWithParams?q=' + wordToSearch
+            + '&length=' + lengthOfFile
+            + '&limit=' + limitOfFile
+            + '&includeMetaData=' + includeMetaData +
+            '&fileName=' + currentFileName,
+            type: 'POST',
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (data) {
+                $("#show").show();
+                $('#searchRes').empty();
+                var metadata = data.metaData;
+                var title = $('<h1>').append("Response");
+                var text = $('<p>');
+                if (includeMetaData) {
+                    text.append("Metadata: "+JSON.stringify(data.metaData) + '<br>');
+                }
+                text.append("Text: ");
+                $.each(data.text, function (index, element) {
+                    text.append(element + ' ');
+                })
+                $('#searchRes').append(title).append(text);
+                if (metadata != null) {
+                    $.toaster({
+                        message: "File size:" + metadata.fileSize + "<br>"
+                        + "File name:" + metadata.fileName + "<br>"
+                        + "Creation date:" + metadata.fileCreationDate, title: "Metadata"
+                    });
+                }
             }
         }
-    });
+    )
+    ;
 }
 function showAllFiles() {
     $.ajax({
-        url: '/showAllFiles',
+        url: './showAllFiles',
         type: 'GET',
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
@@ -136,32 +145,36 @@ function addIcon(titleName, id) {
 
 }
 
-$('.plate').on('click',getFileByPlate);
+$('.plate').on('click', getFileByPlate);
 
 function getFileByPlate() {
-   var id=$(this).find("label").attr("id");
+    var text = $(this).find("label").text();
    $.ajax({
-        url: '/showAllFiles?id='+id,
+        url: './showAllFiles?fileName=' + text,
         type: 'POST',
         processData: false,  // tell jQuery not to process the data
         contentType: false,  // tell jQuery not to set contentType
         success: function (data) {
+            oveflowY();
             $("#show").show();
+            $("#searchRes").empty();
             $('#wholeText').empty();
-            var metadata=data.metaData;
+            var metadata = data.metaData;
             var title = $('<h1>').append(metadata.fileName);
-            currentFileName=metadata.fileName;
+            currentFileName = metadata.fileName;
             var text = $('<p>');
-            $.each(data.text,function(index, element) {
-                text.append(element+' ');
+            $.each(data.text, function (index, element) {
+                text.append(element + ' ');
             })
             $('#wholeText').append(title).append(text);
             $('body').animate({
                 scrollTop: $('body')[0].scrollHeight
             }, 500);
-            $.toaster({ message : "File size:"+metadata.fileSize+"<br>"
-            +"File name:" +metadata.fileName+"<br>"
-            +"Creation date:"+metadata.fileCreationDate,title:"Metadata" });
-            }
+            $.toaster({
+                message: "File size:" + metadata.fileSize + "<br>"
+                + "File name:" + metadata.fileName + "<br>"
+                + "Creation date:" + metadata.fileCreationDate, title: "Metadata"
+            });
+        }
     });
 }

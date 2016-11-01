@@ -1,54 +1,68 @@
+body{
+    overflow-y:hidden;
+}
 .top-main {
     width: 100%;
-    padding:5% 1% 0 1%;
+    padding: 5% 1% 0 1%;
     background-color: #ADFF99;
-  height: 100%;
+    height: 100%;
 }
-.logo{
-    margin:0 5px 10px 5px;
+
+.logo {
+    margin: 0 5px 10px 5px;
 }
-.file-list{
+
+.file-list {
     padding-top: 40px;
 }
-.plate{
-    padding:10px;
+
+.plate {
+    padding: 10px;
     text-align: center;
-    height: 100px;
     transition: 0.3s;
 }
-.plate:hover{
-  background-color: #94db82;
+
+.plate:hover {
+    background-color: #94db82;
 }
-.menu{
+
+.menu {
     width: 100%;
     height: 85px;
     background-color: #757F73;
     padding-left: 60px;
     padding-top: 10px;
-    font-size:60%;
-    color:white;
-}
-.menu>.form-control {
-    float:left;
+    font-size: 60%;
+    color: white;
 }
 
+.menu > .form-control {
+    float: left;
+}
 
-.fa-plus-circle{
+.fa-plus-circle {
     position: absolute;
     bottom: -29px;
     z-index: 1;
     left: +10px;
 }
 
-.fa-plus-circle:hover{
-    color:#7cc16a;
+.fa-plus-circle:hover {
+    color: #7cc16a;
 }
-#wholeText{
+
+#wholeText {
     padding: 20px;
-    border-right: 2px solid #757F73}
-#search{
-   height: 55px;
+    border-right: 2px solid #757F73
 }
+
+#search {
+    height: 55px;
+}
+#searchRes {
+    padding: 20px;
+}
+
 
 
 

@@ -1,15 +1,13 @@
 package com.example.repository.model;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by cavayman on 30.09.2016.
  */
-@Entity
 public class Metadata {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
     private Integer metadata_id;
     private String fileName;
     private String fileSize;
@@ -51,9 +49,6 @@ public class Metadata {
         this.fileCreationDate = fileCreationDate;
     }
 
-    public Date getFileLastModifiedDate() {
-        return fileLastModifiedDate;
-    }
 
     public void setFileLastModifiedDate(Date fileLastModifiedDate) {
         this.fileLastModifiedDate = fileLastModifiedDate;

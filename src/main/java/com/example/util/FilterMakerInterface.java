@@ -1,10 +1,8 @@
 package com.example.util;
 
-import com.example.repository.model.Metadata;
-import com.example.util.FilterConfig;
+
 import org.json.simple.JSONObject;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -12,7 +10,7 @@ import java.util.List;
  */
 public interface FilterMakerInterface {
 
-    List<String> filterText() throws IOException;
+    List<String> filterText();
 
     void setFilterConfig(FilterConfig filterConfig);
 
